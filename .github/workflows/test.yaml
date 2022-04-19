@@ -1,0 +1,12 @@
+name: Testing GH Actions
+on: [push]
+jobs:
+  list-files-in-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "this is a message from GH actions job"
+      - run: echo "event name - ${{github.event_name}}"
+      - name: Check out repo
+        uses: actions/checkout@v3
+      - name: List repo files
+        run: ls ${{ github.workspace }}
