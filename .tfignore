@@ -1,0 +1,6 @@
+plan.out
+tf.state
+
+*.DS_Store
+.gitignore
+.git
