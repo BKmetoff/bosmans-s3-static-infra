@@ -1,13 +1,10 @@
-name: Validate terraform manifests
+name: Lint terraform manifests
 on: [push]
 
-env:
-  ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
-  SECRET_KEY: ${{ secrets.SECRET_KEY }}
-
 jobs:
-  validate:
+  lint:
     runs-on: ubuntu-latest
+
     steps:
       - name: Check out repo
         uses: actions/checkout@v3
@@ -17,5 +14,20 @@ jobs:
         with:
           terraform_version: 1.0.9
 
-      - name: Validate
-        run: terraform validate -no-color
+      - name: Install linter
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: v0.34.0
+
+      - name: Runs linter
+        run: |
+          ROOT_DIR=$(git rev-parse --show-toplevel);
+          DIRECTORIES=$(find . -name '*.tf' | awk -F'/[^/]*$' '{print $1}' | sort | uniq);
+          for d in $DIRECTORIES
+          do
+            echo "Linting $d"
+            cd $d
+            terraform get >> /dev/null 2>&1
+            tflint --config $ROOT_DIR/.tflint.hcl
+            cd $ROOT_DIR
+          done
