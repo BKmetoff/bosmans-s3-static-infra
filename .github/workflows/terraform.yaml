@@ -19,15 +19,11 @@ jobs:
         with:
           tflint_version: v0.34.0
 
-      - name: Runs linter
-        run: |
-          ROOT_DIR=$(git rev-parse --show-toplevel);
-          DIRECTORIES=$(find . -name '*.tf' | awk -F'/[^/]*$' '{print $1}' | sort | uniq);
-          for d in $DIRECTORIES
-          do
-            echo "Linting $d"
-            cd $d
-            terraform get >> /dev/null 2>&1
-            tflint --config $ROOT_DIR/.tflint.hcl
-            cd $ROOT_DIR
-          done
+      - name: Show version
+        run: tflint --version
+
+      - name: Init TFLint
+        run: tflint --init
+
+      - name: Run TFLint
+        run: tflint -f compact
