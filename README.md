@@ -11,18 +11,24 @@ This path is relative to the root of the repo.
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.75.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_github_actions"></a> [github\_actions](#module\_github\_actions) | ./modules/github_actions | n/a |
-| <a name="module_s3"></a> [s3](#module\_s3) | ./modules/s3 | n/a |
+| <a name="module_github_actions_prod"></a> [github\_actions\_prod](#module\_github\_actions\_prod) | ./modules/github_actions | n/a |
+| <a name="module_github_actions_staging"></a> [github\_actions\_staging](#module\_github\_actions\_staging) | ./modules/github_actions | n/a |
+| <a name="module_s3_prod"></a> [s3\_prod](#module\_s3\_prod) | ./modules/s3 | n/a |
+| <a name="module_s3_staging"></a> [s3\_staging](#module\_s3\_staging) | ./modules/s3 | n/a |
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [aws_iam_openid_connect_provider.github](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
 
 ## Inputs
 
@@ -32,10 +38,8 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_bosmans_s3_bucket_arn"></a> [bosmans\_s3\_bucket\_arn](#output\_bosmans\_s3\_bucket\_arn) | The s3 bucket ARN |
-| <a name="output_bosmans_s3_id"></a> [bosmans\_s3\_id](#output\_bosmans\_s3\_id) | The s3 bucket name |
-| <a name="output_bosmans_s3_website_domain"></a> [bosmans\_s3\_website\_domain](#output\_bosmans\_s3\_website\_domain) | The s3 website domain |
-| <a name="output_bosmans_s3_website_endpoint"></a> [bosmans\_s3\_website\_endpoint](#output\_bosmans\_s3\_website\_endpoint) | The s3 website endpoint |
-| <a name="output_gh_actions_iam_role_to_assume_arn"></a> [gh\_actions\_iam\_role\_to\_assume\_arn](#output\_gh\_actions\_iam\_role\_to\_assume\_arn) | AWS IAM nameARN to assume |
-| <a name="output_gh_actions_iam_role_to_assume_name"></a> [gh\_actions\_iam\_role\_to\_assume\_name](#output\_gh\_actions\_iam\_role\_to\_assume\_name) | AWS IAM role ARN to assume |
+| <a name="output_prod_bosmans_s3_endpoint"></a> [prod\_bosmans\_s3\_endpoint](#output\_prod\_bosmans\_s3\_endpoint) | Endpoint prod |
+| <a name="output_prod_gh_actions_assume_role_arn"></a> [prod\_gh\_actions\_assume\_role\_arn](#output\_prod\_gh\_actions\_assume\_role\_arn) | IAM ARN of assumed role - prod |
+| <a name="output_staging_bosmans_s3_endpoint"></a> [staging\_bosmans\_s3\_endpoint](#output\_staging\_bosmans\_s3\_endpoint) | Endpoint staging |
+| <a name="output_staging_gh_actions_assume_role_arn"></a> [staging\_gh\_actions\_assume\_role\_arn](#output\_staging\_gh\_actions\_assume\_role\_arn) | IAM ARN of assumed role - staging |
 <!-- END_TF_DOCS -->
