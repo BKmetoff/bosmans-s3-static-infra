@@ -1,13 +1,5 @@
-config {
-  plugin_dir = "~/.tflint.d/plugins"
-
-  module              = true
-  force               = false
-  disabled_by_default = false
-}
-
-plugin "aws" {
+plugin "aws-serverless" {
   enabled = true
-  version = "0.10.1"
-  source  = "github.com/terraform-linters/tflint-ruleset-aws"
+  version = "0.3.2"
+  source = "github.com/awslabs/serverless-rules"
 }

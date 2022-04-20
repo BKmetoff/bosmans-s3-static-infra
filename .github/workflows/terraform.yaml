@@ -1,29 +1,17 @@
-name: Lint terraform manifests
+name: tflint-serverless
+
 on: [push]
 
 jobs:
-  lint:
+  tflint-serverless:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out repo
-        uses: actions/checkout@v3
-
-      - name: Install terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.0.9
-
-      - name: Install linter
+      - uses: actions/checkout@v2
+      - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v1
         with:
-          tflint_version: v0.34.0
-
-      - name: Show version
-        run: tflint --version
-
-      - name: Init TFLint
+          tflint_version: v0.29.0
+      - name: Install Terraform plugins
         run: tflint --init
-
-      - name: Run TFLint
-        run: tflint -f compact
+      - name: Lint Terraform files
+        run: tflint
