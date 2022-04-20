@@ -65,14 +65,3 @@ resource "aws_s3_bucket_website_configuration" "website" {
     key = var.error_document
   }
 }
-
-
-resource "aws_s3_bucket_object" "static_files" {
-  bucket       = aws_s3_bucket.bucket.id
-  for_each     = var.files
-  key          = replace(each.value, var.website_files_path, "")
-  source       = "${var.website_files_path}${each.value}"
-  acl          = var.bucket_acl
-  etag         = filemd5("${var.website_files_path}${each.value}")
-  content_type = lookup(var.mime_types, split(".", each.value)[length(split(".", each.value)) - 1])
-}
