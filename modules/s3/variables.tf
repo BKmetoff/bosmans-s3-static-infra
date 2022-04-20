@@ -20,21 +20,6 @@ variable "website" {
   default     = false
 }
 
-variable "website_files_path" {
-  description = "The path to the content of the website files"
-  type        = string
-}
-
-variable "files" {
-  description = "A fileset of the website files"
-  type        = any
-}
-
-variable "mime_types" {
-  description = "The mime types of the website files"
-  type        = map(string)
-}
-
 variable "index_document" {
   description = "The title of the index document"
   type        = string

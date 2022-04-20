@@ -1,18 +1,5 @@
 locals {
-  bucket_name    = "bosmans-and-beyond"
-  source_path    = "../static_content/"
-  filtered_files = fileset(local.source_path, "**/*.{js,css,html,jpeg,jpg,png,svg,ttf}")
-  mime_types = {
-    css  = "text/css"
-    html = "text/html"
-    jpeg = "image/jpeg"
-    jpg  = "image/jpeg"
-    js   = "application/javascript"
-    json = "application/json"
-    png  = "image/png"
-    svg  = "image/svg+xml"
-    ttf  = "font/ttf"
-  }
+  bucket_name = "bosmans-and-beyond"
 }
 
 terraform {
@@ -49,10 +36,16 @@ module "s3" {
     Environment = "Production"
   }
 
-  website            = true
-  website_files_path = local.source_path
-  files              = local.filtered_files
-  mime_types         = local.mime_types
-  index_document     = "index.html"
-  error_document     = "error.html"
+  website        = true
+  index_document = "index.html"
+  error_document = "error.html"
+}
+
+
+# GH actions
+module "github_actions" {
+  source       = "./modules/github_actions"
+  organization = "bkmetoff"
+  repository   = "bosmans-v2"
+  bucket_name  = "bosmans-and-beyond"
 }

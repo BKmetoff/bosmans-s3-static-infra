@@ -1,0 +1,29 @@
+name: Lint terraform manifests
+on: [push]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v3
+
+      - name: Install terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.0.9
+
+      - name: Install linter
+        uses: terraform-linters/setup-tflint@v1
+        with:
+          tflint_version: v0.34.0
+
+      - name: Show version
+        run: tflint --version
+
+      - name: Init TFLint
+        run: tflint --init
+
+      - name: Run TFLint
+        run: tflint -f compact
