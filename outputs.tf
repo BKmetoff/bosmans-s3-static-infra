@@ -1,29 +1,21 @@
-output "bosmans_s3_id" {
-  description = "The s3 bucket name"
-  value       = module.s3.bucket_id
+# prod
+output "prod_bosmans_s3_endpoint" {
+  description = "Endpoint prod"
+  value       = module.s3_prod.website_endpoint
 }
 
-output "bosmans_s3_website_domain" {
-  description = "The s3 website domain"
-  value       = module.s3.website_domain
+output "prod_gh_actions_assume_role_arn" {
+  description = "IAM ARN of assumed role - prod"
+  value       = module.github_actions_prod.aws_iam_role_arn
 }
 
-output "bosmans_s3_website_endpoint" {
-  description = "The s3 website endpoint"
-  value       = module.s3.website_endpoint
+# staging
+output "staging_bosmans_s3_endpoint" {
+  description = "Endpoint staging"
+  value       = module.s3_staging.website_endpoint
 }
 
-output "bosmans_s3_bucket_arn" {
-  description = "The s3 bucket ARN"
-  value       = module.s3.bucket_arn
-}
-
-output "gh_actions_iam_role_to_assume_name" {
-  description = "AWS IAM role ARN to assume"
-  value       = module.github_actions.aws_iam_role_arn
-}
-
-output "gh_actions_iam_role_to_assume_arn" {
-  description = "AWS IAM nameARN to assume"
-  value       = module.github_actions.aws_iam_role_name
+output "staging_gh_actions_assume_role_arn" {
+  description = "IAM ARN of assumed role - staging"
+  value       = module.github_actions_staging.aws_iam_role_arn
 }

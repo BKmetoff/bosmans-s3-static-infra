@@ -1,5 +1,8 @@
 locals {
-  bucket_name = "bosmans-and-beyond"
+  bucket_name_prod = "bosmans-and-beyond"
+  bucket_tag_name  = title(replace(local.bucket_name_prod, "-", " "))
+  organization     = "BKmetoff"
+  repository       = "bosmans-v2"
 }
 
 terraform {
@@ -25,14 +28,20 @@ provider "aws" {
 }
 
 
+# Allows github to access AWS -> https://github.blog/changelog/2022-01-13-github-actions-update-on-oidc-based-deployments-to-aws/
+resource "aws_iam_openid_connect_provider" "github" {
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+}
 
-# s3
-module "s3" {
+# s3 prod
+module "s3_prod" {
   source      = "./modules/s3"
   bucket_acl  = "public-read"
-  bucket_name = local.bucket_name
+  bucket_name = local.bucket_name_prod
   bucket_tags = {
-    Name        = "Bosmans and Beyond"
+    Name        = local.bucket_tag_name
     Environment = "Production"
   }
 
@@ -41,11 +50,36 @@ module "s3" {
   error_document = "error.html"
 }
 
-
-# GH actions
-module "github_actions" {
+# GH action prod
+module "github_actions_prod" {
   source       = "./modules/github_actions"
-  organization = "bkmetoff"
-  repository   = "bosmans-v2"
-  bucket_name  = "bosmans-and-beyond"
+  organization = local.organization
+  repository   = local.repository
+  bucket_name  = local.bucket_name_prod
+  oidc_arn     = aws_iam_openid_connect_provider.github.arn
+}
+
+# s3 staging
+module "s3_staging" {
+  source      = "./modules/s3"
+  bucket_acl  = "public-read"
+  bucket_name = "${local.bucket_name_prod}-staging"
+  bucket_tags = {
+    Name        = "${local.bucket_tag_name} Staging"
+    Environment = "Staging"
+  }
+
+  website        = true
+  index_document = "index.html"
+  error_document = "error.html"
+}
+
+# GH action staging
+module "github_actions_staging" {
+  source       = "./modules/github_actions"
+  organization = local.organization
+  repository   = local.repository
+  bucket_name  = "${local.bucket_name_prod}-staging"
+  oidc_arn     = aws_iam_openid_connect_provider.github.arn
+  staging      = true
 }
