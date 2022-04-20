@@ -16,5 +16,10 @@ variable "bucket_name" {
 variable "oidc_arn" {
   description = "ARN of the s3 bucket"
   type        = string
-  default     = ""
+}
+
+variable "staging" {
+  description = "Weather GH should upload to s3 staging bucket"
+  type        = bool
+  default     = false
 }

@@ -1,17 +1,9 @@
-# Allows github to access AWS -> https://github.blog/changelog/2022-01-13-github-actions-update-on-oidc-based-deployments-to-aws/
-resource "aws_iam_openid_connect_provider" "github" {
-  url             = "https://token.actions.githubusercontent.com"
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
-}
-
-
 data "aws_iam_policy_document" "github_actions_assume_role" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github.arn]
+      identifiers = [var.oidc_arn]
     }
     condition {
       test     = "StringLike"
@@ -22,7 +14,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
 }
 
 resource "aws_iam_role" "github_actions" {
-  name               = "github-actions-${var.organization}-${var.repository}"
+  name               = "gh-actions-${var.bucket_name}"
   assume_role_policy = data.aws_iam_policy_document.github_actions_assume_role.json
 }
 
@@ -30,13 +22,14 @@ data "aws_iam_policy_document" "github_actions" {
   statement {
     actions = [
       "s3:PutObject",
+      "s3:DeleteObject",
     ]
     resources = ["arn:aws:s3:::${var.bucket_name}/*"]
   }
 }
 
 resource "aws_iam_policy" "github_actions" {
-  name        = "github-actions-${var.repository}"
+  name        = "gh-actions-${var.bucket_name}"
   description = "Allows GH Actions to push files to ${var.bucket_name} from ${var.organization}/${var.repository}"
   policy      = data.aws_iam_policy_document.github_actions.json
 }
