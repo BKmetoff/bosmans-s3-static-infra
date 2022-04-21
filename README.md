@@ -1,6 +1,5 @@
 Basic terraform configuration to deploy a single static website to AWS S3.
-The path to the website contents is set to `../static_content`.
-This path is relative to the root of the repo.
+With the current configuration,the webiste is deployed to the s3 buckets using GH actions.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
